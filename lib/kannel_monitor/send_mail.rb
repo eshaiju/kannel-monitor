@@ -1,23 +1,21 @@
 require 'rubygems'
-require 'net/smtp'
+require 'sendmail'
+require 'pony'
 
 module KannelMonitor
   class Mailer
     def send_mail(text)
-      from = 'notification@kannel.org'
-      to = 'shaiju@mobme.in'
-      message = <<MESSAGE
-From: Kannel Notification <#{from}>
-To: Name of the recepient <#{to}>
-MIME-Version: 1.0
-Content-type: text/html
-Subject: #{text}
-MESSAGE
-      Net::SMTP.start('localhost',25) do |smtp|
-          smtp.send_message [message, "#{text}"].join("\r\n"),from,to
-      end
+     Pony.mail(
+      :from => 'notification@kannel.org', 
+      :to => 'shaiju@mobme.in',
+      :via => :sendmail, 
+      :subject => "#{text}",
+      :body => "#{text}")
     end
   end
-
 end
 
+
+#[CRITICAL] :: FastAlerts SMPP CLIENT :: NOT RESPONDING on PORT 80
+
+#Alert: Not Able to Connect to FA KANNEL on 67.207.134.250 port 80 as on Thu Sep 26 09:03:27 UTC 2013

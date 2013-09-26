@@ -6,15 +6,15 @@ require 'active_support/core_ext'
 require './send_mail'
 
 module KannelMonitor
-
-  ERROR_COULD_NOT_CONNECT = 'Could not connect to Kannel status URL.'
+  ERROR_COULD_NOT_CONNECT = "Could not connect to Kannel status URL"
   ERROR_XML_PARSING = 'Could not parse Kannel status XML.'
   ERROR_KANNEL_SUSPENDED = 'kannel is in suspended state'
   ERROR_KANNEL_ISOLATED = 'kannel is in isolated state'
   ERROR_KANNEL_FULL = 'Kannel maximum-queue-length is achieved'
   ERROR_KANNEL_SHUTDOWN = 'Kannel is shutdown state'
-  ERROR_SMSC_OFFLINE = 'SMSC is re-connecting: '
-  ERROR_SMSC_DEAD = 'SMSC is dead: '
+  ERROR_SMSC_OFFLINE = 'SMSC is re-connecting : '
+  ERROR_SMSC_DEAD = 'SMSC is dead :'
+  ERROR_SMSC_QUEUE = 'SMS are getting queued on SMSC : '
 
   class Monitor
 	  def initialize(options = {})
@@ -43,8 +43,7 @@ module KannelMonitor
 	  	sent_status.each do |status|
 	  		p queue_size = status.css('queued').text
 	  		if queue_size.to_i > @queue_alert_limit.to_i
-	  			p text = "sms are getting queued"
-	  			p "sending mail.........."
+	  			p text = "SMS are getting queued"
           @mail_client.send_mail(text)
 	  		end
 	  	end	
@@ -55,22 +54,18 @@ module KannelMonitor
       if kannel_status == 'suspended'
         text = ERROR_KANNEL_SUSPENDED 
         @logger.info(ERROR_KANNEL_SUSPENDED)
-        p "sending mail.........."
         @mail_client.send_mail(text)
       elsif kannel_status == 'isolated'
       	text = ERROR_KANNEL_ISOLATED
       	@logger.info(ERROR_KANNEL_ISOLATED)
-      	p "sending mail.........."
         @mail_client.send_mail(text)
       elsif kannel_status == 'full'
       	text = ERROR_KANNEL_FULL
       	@logger.info(ERROR_KANNEL_FULL)
-      	p "sending mail.........."
         @mail_client.send_mail(text)
       elsif kannel_status == 'shutdown'
       	text = ERROR_KANNEL_SHUTDOWN
         @logger.info(ERROR_KANNEL_SHUTDOWN)
-      	p "sending mail.........."
         @mail_client.send_mail(text)
       end
 	  end
@@ -87,18 +82,14 @@ module KannelMonitor
 			    if status[0] == 're-connecting'
 			    	p text = ERROR_SMSC_OFFLINE + smsc_id
 			    	@logger.info(ERROR_SMSC_OFFLINE + smsc_id)
-			    	p "sending mail......."
             @mail_client.send_mail(text)
 			    elsif status[0] == 'dead'
 			    	p text = ERROR_SMSC_DEAD + smsc_id
 			    	@logger.info(ERROR_SMSC_DEAD + smsc_id)
-			    	p "sending mail.........."
             @mail_client.send_mail(text)
 			    end
 			    if smsc_queue.to_i > @queue_alert_limit.to_i
-			    	p "sms are getting queued"
-			    	@logger.info("sms are getting queued" + smsc_id)
-			    	p "sending mail.........."
+			    	@logger.info(ERROR_SMSC_QUEUE + smsc_id)
             @mail_client.send_mail(text)
 			    end	
 			  end

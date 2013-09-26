@@ -1,0 +1,8 @@
+kannel_settings:
+   host: localhost
+   port: 13000
+   username: admin
+   password: m0bm33sms
+   smsc_to_be_skipped: 'VfirstTranscritical,RouteSmsTransaction'
+
+

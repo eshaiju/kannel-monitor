@@ -3,19 +3,14 @@ require 'sendmail'
 require 'pony'
 
 module KannelMonitor
-  class Mailer
+  module Mailer
     def send_mail(text)
      Pony.mail(
       :from => 'notification@kannel.org', 
-      :to => 'shaiju@mobme.in',
+      :to => 'eshaiju@gmail.com,shaiju@mobme.in',
       :via => :sendmail, 
-      :subject => "#{text}",
-      :body => "#{text}")
+      :subject => "[CRITICAL]::#{@kannel_name}::#{text}".upcase,
+      :body => "Kannel Name : #{@kannel_name} \nHost : #{@host} \nPort : #{@port} \n#{text} as on #{Time.now}")
     end
   end
 end
-
-
-#[CRITICAL] :: FastAlerts SMPP CLIENT :: NOT RESPONDING on PORT 80
-
-#Alert: Not Able to Connect to FA KANNEL on 67.207.134.250 port 80 as on Thu Sep 26 09:03:27 UTC 2013

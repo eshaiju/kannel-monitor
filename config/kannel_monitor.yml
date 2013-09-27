@@ -1,8 +1,15 @@
 kannel_settings:
-   host: localhost
+   host: xxxxxxxxxx
    port: 13000
    username: admin
-   password: m0bm33sms
-   smsc_to_be_skipped: 'VfirstTranscritical,RouteSmsTransaction'
+   password: xxxxxxx
+   smsc_to_be_skipped:
+    - VfirstTranscriticalESMS
+    - RouteSmsTransaction
+   kannel_name: 'FA-KANNEL'
+email_settings:
+   to: 'shaiju@mobme.in'
+   from: 'notification@kannle.in'
+
 
 

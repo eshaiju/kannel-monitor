@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["shaiju@mobme.in"]
   spec.description   = %q{Gem for monitor kannel}
   spec.summary       = %q{Gem for monitoring kannel }
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/shaijunonu/kannel-monitor"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

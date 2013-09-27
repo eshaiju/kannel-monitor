@@ -24,7 +24,7 @@ module KannelMonitor
       @from_mail = @settings[:email_settings]['to']  || 'notification@kannel.org'
 	  	@logger = Logger.new(STDOUT)
 	  	@kannel_error_status = {'suspended' =>'kannel is in suspended state','isolated' => 'kannel is in isolated state' ,'full' => 'Kannel maximum-queue-length is achieved' ,'shutdown' =>'Kannel is shutdown state'}
-      @smsc_error_status = {'re-connecting' => 'SMSC is re-connecting :: ' , 'online' => 'SMSC is dead ::' }
+      @smsc_error_status = {'re-connecting' => 'SMSC is re-connecting :: ' , 'dead' => 'SMSC is dead ::' }
 	  end
 
 	  def start_monitoring

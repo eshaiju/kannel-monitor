@@ -2,14 +2,10 @@
 
 This is ruby gem for monitoring kannle smsc status. This gem will check
 
- 1 kannel status
-
- 2 kannel sms queue
-
- 3 smsc status
-
- 4 smsc queue
-
+ - kannel status
+ - kannel sms queue
+ - smsc status
+ - smsc queue
 
 
 ## Installation
@@ -30,38 +26,10 @@ Or install it yourself as:
 
     To run this
 
-
-    $ kannel_monitor ' path to kannel  /kannel_monitor.yml'
-
-
-Format of kannel_monitor.yml
+    $ kannel_monitor 'path to kannel_monitor.yml'
 
 
-kannel_settings:
-
-   host: xxxxxxxxxx
-
-   port: xxxxxxx
-
-   username: admin
-
-   password: xxxxxxx
-
-   smsc_to_be_skipped:
-
-    - smsc1
-
-    - smsc2
-
-   kannel_name: 'TEST-KANNEL'
-
-email_settings:
-
-   to: 'example@gmail.com'
-
-   from: 'notification@kannle.in'
-
-
+Format of  kannel_monitor.yml is given [here] (https://github.com/shaijunonu/kannel-monitor/blob/master/config/kannel_monitor.yml).
 
 
 ## Contributing

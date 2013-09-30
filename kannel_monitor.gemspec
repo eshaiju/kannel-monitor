@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency  "pony", "~> 1.5.1"
   spec.add_development_dependency "nokogiri", "~> 1.6.0"
   spec.add_development_dependency "active_support", "~> 3.0.0"
-  spec.add_dependency "i18n"
+  spec.add_development_dependency "i18n"
 
 end
  

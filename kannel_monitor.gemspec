@@ -6,9 +6,9 @@ require 'kannel_monitor/version'
 Gem::Specification.new do |spec|
   spec.name          = "kannel_monitor"
   spec.version       = KannelMonitor::VERSION
-  spec.authors       = ["shaiju"]
+  spec.authors       = ["shaijunonu"]
   spec.email         = ["shaiju@mobme.in"]
-  spec.description   = %q{Gem for monitor kannel}
+  spec.description   = %q{Gem for monitoring kannel status and also smsc status}
   spec.summary       = %q{Gem for monitoring kannel }
   spec.homepage      = "https://github.com/shaijunonu/kannel-monitor"
   spec.license       = "MIT"

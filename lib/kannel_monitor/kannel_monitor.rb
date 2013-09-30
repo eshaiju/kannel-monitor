@@ -1,9 +1,6 @@
-require "logger"
-require 'yaml'
 require 'nokogiri'
-require 'open-uri'
-require 'active_support/core_ext'
 require_relative './send_mail'
+require_relative './configuration'
 
 module KannelMonitor
   ERROR_COULD_NOT_CONNECT = "Could not connect to Kannel status URL"
@@ -11,20 +8,9 @@ module KannelMonitor
   ERROR_SMSC_QUEUE = 'SMS are getting queued on SMSC :: '
   class Monitor
   	include Mailer
+    include Configuration
 	  def initialize(configuration_file = {})
-	    @settings = YAML.load_file(configuration_file).symbolize_keys!
-	  	@host = @settings[:kannel_settings]['host']
-    	@port = @settings[:kannel_settings]['port']
-    	@username = @settings[:kannel_settings]['username']
-      @password = @settings[:kannel_settings]['password']
-      @smsc_to_be_skipped = @settings[:kannel_settings]['smsc_to_be_skipped'] || []
-      @queue_alert_limit =  @settings[:kannel_settings]['queue_alert_limit'] || 200
-	  	@kannel_name =  @settings[:kannel_settings]['kannel_name'] || ""
-      @to_mails = @settings[:email_settings]['to']
-      @from_mail = @settings[:email_settings]['to']  || 'notification@kannel.org'
-	  	@logger = Logger.new(STDOUT)
-	  	@kannel_error_status = {'suspended' =>'kannel is in suspended state','isolated' => 'kannel is in isolated state' ,'full' => 'Kannel maximum-queue-length is achieved' ,'shutdown' =>'Kannel is shutdown state'}
-      @smsc_error_status = {'re-connecting' => 'SMSC is re-connecting :: ' , 'dead' => 'SMSC is dead ::' }
+      load_settings(configuration_file)	    
 	  end
 
 	  def start_monitoring
@@ -49,9 +35,9 @@ module KannelMonitor
 
 	  def fetch_kannel_status
       kannel_status = @xml_doc.css('status').text.split(",").first
+      @logger.info('Kannel status :: '+kannel_status)
       @kannel_error_status.each do | key,value|
         if kannel_status == key
-        	@logger.info(value)
         	send_mail(value)
           break
         end
@@ -66,9 +52,9 @@ module KannelMonitor
   		  smsc_queue = smsc.css('queued').text
   		  unless @smsc_to_be_skipped.include?(smsc_id) 
 	  		  status = smsc.css('status').text.split(' ')
+          @logger.info(status[0] +' :: '+ smsc_id )
           @smsc_error_status.each do | key,value|
 		        if status[0] == key
-		        	@logger.info(value + smsc_id )
 		        	send_mail(value + smsc_id)
               break
 		        end
@@ -95,5 +81,5 @@ module KannelMonitor
 	end 
 end
 
-#kannel_monitor = KannelMonitor::Monitor.new('/home/shaiju/kannel/kannel_monitor.yml')
-#kannel_monitor.start_monitoring
+kannel_monitor = KannelMonitor::Monitor.new('/home/shaiju/kannel/kannel_monitor.yml')
+kannel_monitor.start_monitoring

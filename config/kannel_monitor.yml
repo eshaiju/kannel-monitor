@@ -4,11 +4,11 @@ kannel_settings:
    username: admin
    password: xxxxxxx
    smsc_to_be_skipped:
-    - VfirstTranscriticalESMS
-    - RouteSmsTransaction
-   kannel_name: 'FA-KANNEL'
+    - smsc1
+    - smsc3
+   kannel_name: 'TEST-KANNEL'
 email_settings:
-   to: 'shaiju@mobme.in'
+   to: 'eshaiju@gmail.com'
    from: 'notification@kannle.in'
 
 

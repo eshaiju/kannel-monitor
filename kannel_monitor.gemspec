@@ -26,6 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "nokogiri", "~> 1.6.0"
   spec.add_development_dependency "active_support", "~> 3.0.0"
   spec.add_development_dependency "i18n"
-
 end
  

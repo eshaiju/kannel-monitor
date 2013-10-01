@@ -9,6 +9,7 @@ module KannelMonitor
   class Monitor
     include Mailer
     include Configuration
+
     def initialize(configuration_file = {})
       load_settings(configuration_file)	    
     end
@@ -35,7 +36,7 @@ module KannelMonitor
 
     def fetch_kannel_status
       kannel_status = @xml_doc.css('status').text.split(",").first
-      @logger.info('Kannel status :: '+kannel_status)
+      @logger.info('Kannel status :: ' + kannel_status.to_s)
       @kannel_error_status.each do | key,value|
         if kannel_status == key
           send_mail(value)
@@ -49,7 +50,7 @@ module KannelMonitor
       smscs = @xml_doc.css('smsc')
       smscs.each do |smsc|
         smsc_id = smsc.css('id').text
-        smsc_queue = smsc.css('queued').text
+        p smsc_queue = smsc.css('queued').text
         unless @smsc_to_be_skipped.include?(smsc_id) 
           status = smsc.css('status').text.split(' ')
           @logger.info(status[0] +' :: '+ smsc_id )
@@ -60,8 +61,8 @@ module KannelMonitor
             end
           end
           if smsc_queue.to_i > @queue_alert_limit.to_i
-            @logger.info(ERROR_SMSC_QUEUE + smsc_id)
-            send_mail(ERROR_SMSC_QUEUE + smsc_id)
+            @logger.info(ERROR_SMSC_QUEUE +" :: "+ smsc_id)
+            send_mail(ERROR_SMSC_QUEUE + "::" + smsc_id)
           end	
         end
       end
@@ -72,7 +73,8 @@ module KannelMonitor
       sent_status.each do |status|
         queue_size = status.css('queued').text
         if queue_size.to_i > @queue_alert_limit.to_i
-          text = "SMS are getting queued"
+          text = "SMS are getting queued :: #{queue_size.to_i}"
+          @logger.info(text)
           send_mail(text)
         end
       end	
